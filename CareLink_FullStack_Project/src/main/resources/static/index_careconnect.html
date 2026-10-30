@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CareConnect Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f5fa;--c:#fff;--ink:#16182b;--mu:#667085;--ln:#e3e6ef;--bad:#d92d4b;--ok:#128a5a;--wn:#b7791f;--a:#4f46e5;--r:18px;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-role=admin]{--a:#4f46e5}:root[data-role=doctor]{--a:#0f9d74}:root[data-role=patient]{--a:#d6336c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10111c;--c:#191b2b;--ink:#eceefa;--mu:#9aa1bb;--ln:#2b2e45;--bad:#ff7a90;--ok:#4fd6a0;--wn:#f2bf62}}
+:root[data-theme="dark"]{--bg:#10111c;--c:#191b2b;--ink:#eceefa;--mu:#9aa1bb;--ln:#2b2e45;--bad:#ff7a90;--ok:#4fd6a0;--wn:#f2bf62}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.55 'Nunito Sans',system-ui,sans-serif}
+h1,h2,h3{font-family:Sora,'Nunito Sans',sans-serif;margin:0;letter-spacing:-.02em}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--a);outline-offset:2px;border-radius:8px}
+.as{background:color-mix(in srgb,var(--a) 13%,var(--c))}
+.login{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+.hero{background:var(--a);color:#fff;padding:48px clamp(24px,5vw,72px);display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-90px;bottom:-90px;width:380px;height:380px;border-radius:50%;border:56px solid rgba(255,255,255,.14)}
+.hero h1{font-size:clamp(32px,4.4vw,54px);line-height:1.08;max-width:11em;margin:0 0 16px}
+.hero p{max-width:30em;opacity:.92;font-size:17px}
+.logo{display:flex;gap:10px;align-items:center;font:700 20px Sora}
+.logo i{width:34px;height:34px;border-radius:50%;background:#fff;color:var(--a);display:grid;place-items:center;font-style:normal;font-size:22px;line-height:1}
+.perks{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
+.perks span{background:rgba(255,255,255,.18);padding:6px 14px;border-radius:99px;font-size:14px}
+.formside{display:grid;place-items:center;padding:32px 20px}
+.box{width:min(400px,100%)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--c);border:1px solid var(--ln);border-radius:14px;padding:4px;margin:20px 0}
+.seg button{border:0;background:none;padding:10px 4px;border-radius:10px;font-weight:700;color:var(--mu)}
+.seg button[aria-selected=true]{background:var(--a);color:#fff}
+.role-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:22px 0 18px}
+.role-card{display:flex;flex-direction:column;align-items:flex-start;gap:7px;text-align:left;background:var(--c);border:1.5px solid var(--ln);border-radius:14px;padding:14px 12px;min-height:132px;transition:border-color .18s,transform .18s}
+.role-card:hover{transform:translateY(-2px)}
+.role-card[aria-pressed=true]{border-color:var(--a);box-shadow:0 0 0 2px color-mix(in srgb,var(--a) 16%,transparent);background:color-mix(in srgb,var(--a) 5%,var(--c))}
+.role-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:color-mix(in srgb,var(--a) 13%,var(--c));color:var(--a);font-weight:800;font-size:17px}
+.role-card strong{font-size:14px}.role-card small{font-size:11px;line-height:1.35;color:var(--mu)}
+.login-intro{margin-top:5px;color:var(--mu);font-size:14px}
+@media(max-width:520px){.role-grid{gap:7px}.role-card{padding:10px 8px;min-height:126px}.role-card small{font-size:10px}}
+
+label{display:block;font-size:13px;font-weight:700;color:var(--mu);margin:14px 0 5px}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--c);border:1.5px solid var(--ln);border-radius:12px;padding:11px 13px;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--a);outline:0}
+.btn{border:0;background:var(--a);color:#fff;padding:11px 20px;border-radius:12px;font-weight:700}
+.btn:hover{filter:brightness(1.1)}.btn.w{width:100%;margin-top:20px;padding:13px}
+.btn.g{display:inline-block;margin:0;background:none;border:1.5px solid var(--ln);color:var(--ink)}.btn.s{padding:6px 13px;font-size:13px;border-radius:9px}
+.btn.r{background:color-mix(in srgb,var(--bad) 14%,var(--c));color:var(--bad)}
+.err{color:var(--bad);font-weight:600;margin:12px 0 0;min-height:22px}
+.demo{margin-top:18px;padding:14px;border-radius:14px;font-size:14px}
+.demo button{background:none;border:0;color:var(--a);font-weight:700;padding:0;text-decoration:underline}
+.hd{display:flex;align-items:center;gap:20px;padding:14px clamp(16px,4vw,40px);background:var(--c);border-bottom:1px solid var(--ln);flex-wrap:wrap}
+.hd .logo{color:var(--a)}.hd .logo i{background:var(--a);color:#fff}
+.tabs{display:flex;gap:4px;overflow-x:auto;flex:1}
+.tabs button{border:0;background:none;padding:8px 16px;border-radius:99px;font-weight:700;color:var(--mu);white-space:nowrap}
+.tabs button[aria-current=page]{background:var(--a);color:#fff}
+.role-tag{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;padding:3px 7px;border-radius:99px;background:color-mix(in srgb,var(--a) 12%,var(--c));color:var(--a);font-weight:800;margin-top:3px}.me{display:flex;align-items:center;gap:10px;font-size:14px}.me b{display:block;line-height:1.2}.me small{color:var(--mu)}
+.av{width:38px;height:38px;border-radius:50%;background:var(--a);color:#fff;display:grid;place-items:center;font-weight:700}
+main{max-width:1120px;margin:0 auto;padding:30px clamp(16px,4vw,40px) 70px}
+.top{margin-bottom:22px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.top h1{font-size:clamp(24px,3.5vw,32px)}.top p{margin:4px 0 0;color:var(--mu)}
+.g{display:grid;gap:16px;margin-bottom:16px}.k{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}.t2{grid-template-columns:1fr 1fr}
+.card{background:var(--c);border:1px solid var(--ln);border-radius:var(--r);padding:22px}
+.card h3{font-size:17px;margin-bottom:12px}
+.kp span{color:var(--mu);font-size:13px;font-weight:600}.kp b{display:block;font:700 30px Sora;color:var(--a)}.kp small{color:var(--mu)}
+.row{display:flex;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--ln)}.row:first-of-type{border-top:0}
+.row .f{flex:1;min-width:0}.row small{display:block;color:var(--mu)}
+.pill{display:inline-block;padding:3px 11px;border-radius:99px;font-size:12px;font-weight:700;background:color-mix(in srgb,var(--a) 14%,var(--c));color:var(--a)}
+.pill.ok{background:color-mix(in srgb,var(--ok) 15%,var(--c));color:var(--ok)}.pill.wn{background:color-mix(in srgb,var(--wn) 16%,var(--c));color:var(--wn)}.pill.bad{background:color-mix(in srgb,var(--bad) 14%,var(--c));color:var(--bad)}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;color:var(--mu);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--ln);white-space:nowrap}
+td{padding:12px;border-bottom:1px solid var(--ln);white-space:nowrap}tr:last-child td{border:0}
+code{background:var(--bg);padding:2px 7px;border-radius:6px;font-size:13px}
+.bar{height:8px;border-radius:9px;background:var(--ln);min-width:90px;overflow:hidden}.bar i{display:block;height:100%;background:var(--a)}.bar.l i{background:var(--wn)}
+.beds{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin-bottom:18px}
+.bed{border:2px solid var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--c));border-radius:14px;padding:12px 6px;font-weight:700;text-align:center}
+.bed.O{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--c))}.bed.sel{outline:3px solid var(--a)}
+.bed small{display:block;font-weight:400;color:var(--mu);font-size:12px;overflow:hidden;text-overflow:ellipsis}
+.idc{background:var(--a);color:#fff;border-radius:22px;padding:24px;position:relative;overflow:hidden}
+.idc::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;border:30px solid rgba(255,255,255,.16)}
+.idc b{font:700 24px Sora;display:block;margin:14px 0 2px;letter-spacing:.03em}.idc span{opacity:.9;font-size:14px}
+.tl{list-style:none;margin:0;padding:0 0 0 20px;border-left:2px solid var(--ln)}
+.tl li{position:relative;padding:0 0 18px 16px}.tl li::before{content:"";position:absolute;left:-28px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--a);border:3px solid var(--c);box-shadow:0 0 0 2px var(--a)}
+.tl small{color:var(--mu)}
+.sw{position:relative;width:46px;height:26px;border-radius:99px;border:0;background:var(--ln);flex:none;padding:0}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s}
+.sw[aria-checked=true]{background:var(--a)}.sw[aria-checked=true]::after{left:23px}
+.lockn{padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--wn) 14%,var(--c));color:var(--wn);font-weight:600;margin-bottom:14px}
+.em{text-align:center;color:var(--mu);padding:26px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:14px;opacity:0;pointer-events:none;transition:.25s;z-index:9;max-width:90vw}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media (max-width:860px){.login{grid-template-columns:1fr}.hero{min-height:300px;gap:30px}.t2{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div><div id="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s),TODAY='2026-10-22',inr=n=>'₹'+n.toLocaleString('en-IN');
+const fd=d=>new Date(d+'T00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+const H=['','City General Hospital','Lakeside Medical Centre','Sahyadri Care'];
+const P=[[1,'HID-2026-0001','Aarav Mehta',34,'O+',1],[2,'HID-2026-0002','Isha Deshpande',28,'A+',1],[3,'HID-2026-0003','Rohan Patil',61,'B+',1],[4,'HID-2026-0004','Meera Nair',45,'AB-',2],[5,'HID-2026-0005','Kabir Shaikh',8,'O-',1],[6,'HID-2026-0006','Sunita Joshi',72,'A-',3]].map(([id,hid,n,age,bg,h])=>({id,hid,n,age,bg,h}));
+const D=[[1,'Dr. Neha Kulkarni','Cardiology',800],[2,'Dr. Arjun Rao','Orthopaedics',700],[3,'Dr. Farah Khan','Paediatrics',500],[4,'Dr. Vikram Sethi','General Medicine',400]].map(([id,n,dep,fee])=>({id,n,dep,fee}));
+const pn=i=>P.find(x=>x.id==i).n,dn=i=>D.find(x=>x.id==i).n,dp=i=>D.find(x=>x.id==i).dep;
+let A=[[1,1,1,TODAY,'09:30','Scheduled'],[2,2,4,TODAY,'10:15','Scheduled'],[3,5,3,TODAY,'11:00','Scheduled'],[4,3,1,TODAY,'12:30','Scheduled'],[5,4,2,'2026-10-23','09:00','Scheduled'],[6,1,1,'2026-10-26','16:00','Scheduled']].map(([id,p,d,date,t,s])=>({id,p,d,date,t,s}));
+let B=[];[['General ward','G',6],['ICU','I',4],['Private rooms','R',4]].forEach(([w,k,n])=>{for(let i=1;i<=n;i++)B.push({id:k+'-0'+i,w,p:0})});
+[['G-02',3],['G-05',6],['I-01',5],['R-03',4]].forEach(([i,p])=>B.find(x=>x.id==i).p=p);
+let BL=[[1,1,4200,4200],[2,3,18500,10000],[3,6,62400,20000],[4,2,1250,0],[5,1,2600,0]].map(([id,p,total,paid])=>({id,p,total,paid}));
+const M=[['Paracetamol 500 mg',420,100,2],['Amoxicillin 250 mg',64,80,9],['Metformin 500 mg',230,100,3],['Atorvastatin 10 mg',35,60,6],['ORS sachet',310,120,12]].map(([n,s,m,p])=>({n,s,m,p}));
+let R=[[1,1,'2026-08-14','Dr. Neha Kulkarni','Mild hypertension','Started low-dose amlodipine. Review in 8 weeks.'],[1,1,'2026-09-02','Lab','Lipid profile','LDL slightly raised. Diet advice given.'],[1,3,'2026-03-19','Dr. S. Bhide','Seasonal allergic rhinitis','Cetirizine for 10 days.'],[3,1,'2026-10-12','Dr. Neha Kulkarni','Stable angina','Continue current medication.'],[4,2,'2026-07-08','Dr. Arjun Rao','Lumbar strain','Physiotherapy, 6 sessions.']].map(([p,h,date,doc,dx,note])=>({p,h,date,doc,dx,note}));
+let C=[{p:1,to:2,on:true}],AU=[];
+const U={admin:{e:'admin@careconnect.in',pw:'admin123',n:'Hospital Admin',sub:'City General'},doctor:{e:'doctor@careconnect.in',pw:'doctor123',n:'Dr. Neha Kulkarni',sub:'Cardiology',id:1},patient:{e:'patient@careconnect.in',pw:'patient123',n:'Aarav Mehta',sub:'HID-2026-0001',id:1}};
+const COPY={admin:['Run the whole hospital from one screen.','Beds, billing, pharmacy and appointments, always up to date.'],doctor:['Your day, and your patients’ full story.','See today’s schedule and open a patient’s history once they have given consent.'],patient:['Your health, in your hands.','Book visits, read your records and decide which hospitals can see them.']};
+const TABS={admin:[['ov','Overview'],['pt','Patients'],['dr','Doctors'],['bd','Beds'],['bl','Billing'],['rx','Pharmacy']],doctor:[['sc','Schedule'],['rc','Patient records']],patient:[['me','My health'],['bk','Book a visit'],['hr','My records'],['bi','Bills'],['pv','Privacy']]};
+let S={role:'admin',user:null,tab:'',q:'',hid:'HID-2026-0001',look:false,sel:null,err:''};
+const pill=(s,c)=>`<span class="pill ${c||''}">${s}</span>`;
+const sc=s=>({Scheduled:'wn',Completed:'ok',Cancelled:'bad'}[s]);
+const head=(t,s,x='')=>`<div class="top"><div><h1>${t}</h1><p>${s}</p></div>${x}</div>`;
+const own=()=>P.find(x=>x.id==S.user.id);
+const ok=(p,to)=>C.some(c=>c.p==p&&c.to==to&&c.on);
+const nowt=()=>new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+const tl=l=>l.length?`<ul class="tl">${l.sort((a,b)=>b.date.localeCompare(a.date)).map(r=>`<li><b>${r.dx}</b><br><small>${fd(r.date)} · ${r.doc} · ${H[r.h]}</small><div>${r.note}</div></li>`).join('')}</ul>`:'<div class="em">No records yet.</div>';
+const apr=(a,btns='')=>`<div class="row"><span class="pill">${a.date==TODAY?a.t:fd(a.date)+' '+a.t}</span><div class="f"><b>${a.pn||pn(a.p)}</b><small>${dn(a.d)} · ${dp(a.d)}</small></div>${pill(a.s,sc(a.s))}${btns}</div>`;
+const sorted=l=>[...l].sort((a,b)=>(a.date+a.t).localeCompare(b.date+b.t));
+
+const V={
+ov(){const occ=B.filter(b=>b.p).length,due=BL.reduce((s,b)=>s+b.total-b.paid,0);
+ return head('Hospital overview','Thursday, 22 October 2026')+`<div class="g k"><div class="card kp"><span>Appointments today</span><b>${A.filter(a=>a.date==TODAY&&a.s=='Scheduled').length}</b><small>still to be seen</small></div><div class="card kp"><span>Beds occupied</span><b>${occ}/${B.length}</b><small>${Math.round(occ/B.length*100)}% full</small></div><div class="card kp"><span>Outstanding bills</span><b>${inr(due)}</b></div><div class="card kp"><span>Low stock</span><b>${M.filter(m=>m.s<m.m).length}</b><small>medicines to reorder</small></div></div>
+ <div class="card"><h3>All appointments</h3>${sorted(A).map(a=>apr(a,a.s=='Scheduled'?`<button class="btn g s" data-a="cx" data-i="${a.id}">Cancel</button>`:'')).join('')}</div>`},
+pt(){return head('Patients','One Health ID per patient, shared across hospitals.')+`<div class="card tw"><table><tr><th>Health ID</th><th>Name</th><th>Age</th><th>Blood</th><th>Home hospital</th></tr>${P.map(p=>`<tr><td><code>${p.hid}</code></td><td><b>${p.n}</b></td><td>${p.age}</td><td>${p.bg}</td><td>${H[p.h]}</td></tr>`).join('')}</table></div>`},
+dr(){return head('Doctors','Department, fee and current workload.')+`<div class="card tw"><table><tr><th>Doctor</th><th>Department</th><th>Fee</th><th>Booked visits</th></tr>${D.map(d=>`<tr><td><b>${d.n}</b></td><td>${d.dep}</td><td>${inr(d.fee)}</td><td>${A.filter(a=>a.d==d.id&&a.s=='Scheduled').length}</td></tr>`).join('')}</table></div>`},
+bd(){const sel=S.sel&&B.find(b=>b.id==S.sel&&!b.p),free=P.filter(p=>!B.some(b=>b.p==p.id));
+ return head('Beds','Select a free bed to admit a patient. Select an occupied bed to discharge.')+(sel?`<div class="card as" style="margin-bottom:16px"><h3>Admit to ${sel.id}</h3><select id="ap" aria-label="Patient">${free.map(p=>`<option value="${p.id}">${p.n}</option>`).join('')}</select><button class="btn w" data-a="adm" data-i="${sel.id}">Admit patient</button></div>`:'')+
+ `<div class="card">${[...new Set(B.map(b=>b.w))].map(w=>`<h3>${w}</h3><div class="beds">${B.filter(b=>b.w==w).map(b=>`<button class="bed ${b.p?'O':''} ${b.id==S.sel?'sel':''}" data-a="bed" data-i="${b.id}">${b.id}<small>${b.p?pn(b.p):'Free'}</small></button>`).join('')}</div>`).join('')}</div>`},
+bl(){return head('Billing','Record payments as they arrive.')+`<div class="card tw"><table><tr><th>Bill</th><th>Patient</th><th>Total</th><th>Balance</th><th></th></tr>${BL.map(b=>{const d=b.total-b.paid;return `<tr><td>#${1000+b.id}</td><td><b>${pn(b.p)}</b></td><td>${inr(b.total)}</td><td>${inr(d)}</td><td>${d?`<button class="btn s" data-a="pay" data-i="${b.id}">Record payment</button>`:pill('Settled','ok')}</td></tr>`}).join('')}</table></div>`},
+rx(){return head('Pharmacy','Medicines below their minimum level are flagged.')+`<div class="card tw"><table><tr><th>Medicine</th><th>Stock</th><th>Level</th><th>Price</th><th></th></tr>${M.map(m=>`<tr><td><b>${m.n}</b></td><td>${m.s}</td><td><div class="bar ${m.s<m.m?'l':''}"><i style="width:${Math.min(100,m.s/m.m/3*100)}%"></i></div></td><td>${inr(m.p)}</td><td>${m.s<m.m?pill('Reorder','wn'):pill('Healthy','ok')}</td></tr>`).join('')}</table></div>`},
+
+sc(){const l=sorted(A.filter(a=>a.d==S.user.id));return head('My schedule','Open a patient to review their history and add a note.')+`<div class="card">${l.map(a=>apr(a,a.s=='Scheduled'?`<button class="btn s" data-a="open" data-i="${a.id}">Open record</button>`:'')).join('')||'<div class="em">No visits booked.</div>'}</div>`},
+rc(){const p=P.find(x=>x.hid==S.hid);let body='';
+ if(S.look&&!p)body='<div class="card em">Health ID not found. It looks like HID-2026-0001.</div>';
+ if(S.look&&p){const all=R.filter(r=>r.p==p.id),g=ok(p.id,1),vis=all.filter(r=>r.h==1||g),lk=all.length-vis.length;
+  body=`<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px"><div><h3 style="margin:0">${p.n}</h3><small style="color:var(--mu)">${p.hid} · ${p.age} yrs · ${p.bg}</small></div>${g?pill('Patient shares records with City General','ok'):pill('Cross-hospital sharing off','wn')}</div>${lk?`<div class="lockn">${lk} record${lk>1?'s':''} from other hospitals ${lk>1?'are':'is'} locked. Ask the patient to allow City General under Privacy.</div>`:''}${tl(vis)}</div>
+  <div class="card"><h3>Add consultation note</h3><label for="dx">Diagnosis</label><input id="dx"><label for="nt">Treatment notes</label><textarea id="nt" rows="3"></textarea><button class="btn w" data-a="note" data-i="${p.id}">Save note</button></div>`}
+ return head('Patient records','Look up a patient by Health ID. Every lookup is logged.')+`<div class="card" style="margin-bottom:16px"><label for="hid" style="margin-top:0">Health ID</label><div style="display:flex;gap:10px"><input id="hid" value="${S.hid}" list="hl"><datalist id="hl">${P.map(p=>`<option value="${p.hid}">`).join('')}</datalist><button class="btn" data-a="look">Open</button></div></div>${body}`},
+
+me(){const p=own(),up=sorted(A.filter(a=>a.p==p.id&&a.s=='Scheduled')),due=BL.filter(b=>b.p==p.id).reduce((s,b)=>s+b.total-b.paid,0);
+ return head('Hello, '+p.n.split(' ')[0],'Here’s where your health stands today.')+`<div class="g t2"><div class="idc"><span>CareConnect Health ID</span><b>${p.hid}</b><span>${p.n} · Blood group ${p.bg} · ${p.age} yrs</span></div><div class="card kp"><span>Amount due</span><b>${inr(due)}</b><small>${due?'See Bills to pay':'Nothing pending'}</small></div></div><div class="card"><h3>Upcoming visits</h3>${up.map(a=>apr(a,`<button class="btn g s" data-a="cx" data-i="${a.id}">Cancel</button>`)).join('')||'<div class="em">No visits booked. Choose Book a visit to schedule one.</div>'}</div>`},
+bk(){return head('Book a visit','Pick a doctor, day and time.')+`<div class="card" style="max-width:520px"><label for="bd" style="margin-top:0">Doctor</label><select id="bd">${D.map(d=>`<option value="${d.id}">${d.n} · ${d.dep} · ${inr(d.fee)}</option>`).join('')}</select><label for="bt">Date</label><input id="bt" type="date" value="2026-10-23" min="${TODAY}"><label for="bs">Time</label><select id="bs">${['09:00','09:30','10:00','11:30','14:00','15:30','17:00'].map(t=>`<option>${t}</option>`).join('')}</select><button class="btn w" data-a="book">Confirm booking</button></div>`},
+hr(){return head('My records','Everything your doctors have written about you, across hospitals.')+`<div class="card">${tl(R.filter(r=>r.p==S.user.id))}</div>`},
+bi(){const l=BL.filter(b=>b.p==S.user.id);return head('Bills','Pay outstanding balances.')+`<div class="card">${l.map(b=>{const d=b.total-b.paid;return `<div class="row"><div class="f"><b>Bill #${1000+b.id}</b><small>Total ${inr(b.total)} · Paid ${inr(b.paid)}</small></div>${d?`<b>${inr(d)}</b><button class="btn s" data-a="pay" data-i="${b.id}">Pay now</button>`:pill('Settled','ok')}</div>`}).join('')||'<div class="em">No bills.</div>'}</div>`},
+pv(){const id=S.user.id,lg=AU.filter(a=>a.p==id);return head('Privacy','You decide which hospitals can see records created elsewhere.')+`<div class="g t2"><div class="card"><h3>Hospital access</h3>${[1,2,3].map(h=>`<div class="row"><div class="f"><b>${H[h]}</b><small>${ok(id,h)?'Can see all my records':'Sees only its own records'}</small></div><button class="sw" role="switch" aria-label="Allow ${H[h]}" aria-checked="${ok(id,h)}" data-a="tg" data-i="${h}"></button></div>`).join('')}</div><div class="card"><h3>Who looked at my records</h3>${lg.map(a=>`<div class="row"><span class="pill">${a.t}</span><div class="f">${H[a.h]}<small>${a.x?'Included records from other hospitals':'Own records only'}</small></div></div>`).join('')||'<div class="em">No one has opened your records yet.</div>'}</div></div>`}
+};
+
+function login(){const r=S.role,u=U[r];
+  const roleInfo={
+    admin:{icon:'A',title:'Administrator',desc:'Manage hospital operations, staff and resources.'},
+    doctor:{icon:'+',title:'Doctor',desc:'View your schedule and authorised patient records.'},
+    patient:{icon:'♡',title:'Patient',desc:'Book visits and manage your own health information.'}
+  };
+  return `<div class="login"><section class="hero"><div class="logo"><i>+</i>CareConnect</div><div><h1>${COPY[r][0]}</h1><p>${COPY[r][1]}</p></div><div class="perks"><span>Secure sign-in</span><span>Consent-based sharing</span><span>One Health ID</span></div></section>
+  <section class="formside"><div class="box"><h2>Welcome to CareConnect</h2><p class="login-intro">Choose your account type to continue.</p>
+  <div class="role-grid" role="group" aria-label="Choose login role">${['admin','doctor','patient'].map(x=>`<button type="button" class="role-card" aria-pressed="${x==r}" data-a="role" data-i="${x}"><span class="role-icon">${roleInfo[x].icon}</span><strong>${roleInfo[x].title}</strong><small>${roleInfo[x].desc}</small></button>`).join('')}</div>
+  <form id="loginForm" onsubmit="return false"><label for="e">Email</label><input id="e" type="email" autocomplete="username" placeholder="${u.e}" required><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+  <div class="err" role="alert">${S.err}</div><button class="btn w" style="margin-top:6px" data-a="in">Sign in as ${roleInfo[r].title}</button></form>
+  <div class="demo as">Demo account for ${roleInfo[r].title}<br><small style="color:var(--mu)">${u.e} / ${u.pw}</small><br><button type="button" data-a="demo">Fill demo credentials</button></div></div></section></div>`}
+function shell(){const u=S.user,t=TABS[S.role];
+ return `<header class="hd"><div class="logo"><i>+</i>CareConnect</div><nav class="tabs" aria-label="Main">${t.map(([k,l])=>`<button data-a="tab" data-i="${k}" ${S.tab==k?'aria-current="page"':''}>${l}</button>`).join('')}</nav><div class="me"><div class="av">${u.n.replace('Dr. ','')[0]}</div><div><b>${u.n}</b><small>${u.sub}</small><span class="role-tag">${S.role}</span></div><button class="btn g s" data-a="out">Sign out</button></div></header><main>${V[S.tab]()}</main>`}
+function render(){document.documentElement.dataset.role=S.role;$('#app').innerHTML=S.user?shell():login();}
+let tt;const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2800)};
+document.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.id=='pw')$('[data-a=in]').click()});
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el)return;const a=el.dataset.a,i=el.dataset.i;
+ if(a=='role'){S.role=i;S.err='';render()}
+ else if(a=='demo'){render();$('#e').value=U[S.role].e;$('#pw').value=U[S.role].pw}
+ else if(a=='in'){const u=U[S.role];if($('#e').value.trim().toLowerCase()==u.e&&$('#pw').value==u.pw){S.user=u;S.tab=TABS[S.role][0][0];S.err='';render();window.scrollTo(0,0)}else{const e2=$('#e').value,p2=$('#pw').value;S.err=Object.values(U).some(x=>x.e==e2.trim().toLowerCase()&&x.pw==p2)?'These details belong to a different role. Choose the matching tab.':'Email or password is incorrect. Use the demo account below.';render();$('#e').value=e2}}
+ else if(a=='out'){S.user=null;S.look=false;render()}
+ else if(a=='tab'){S.tab=i;S.sel=null;render()}
+ else if(a=='cx'){A.find(x=>x.id==i).s='Cancelled';render();toast('Appointment cancelled')}
+ else if(a=='bed'){const b=B.find(x=>x.id==i);if(b.p){const n=pn(b.p);b.p=0;render();toast(n+' discharged. Bed '+b.id+' is free.')}else{S.sel=i;render()}}
+ else if(a=='adm'){const b=B.find(x=>x.id==i);b.p=+$('#ap').value;S.sel=null;render();toast(pn(b.p)+' admitted to '+b.id)}
+ else if(a=='pay'){const b=BL.find(x=>x.id==i);toast(inr(b.total-b.paid)+' paid');b.paid=b.total;render()}
+ else if(a=='open'){S.hid=P.find(x=>x.id==A.find(y=>y.id==i).p).hid;S.tab='rc';S.look=false;el.dataset.a='look';el.click()}
+ else if(a=='look'){S.hid=($('#hid')?$('#hid').value:S.hid).trim().toUpperCase();S.tab='rc';S.look=true;const p=P.find(x=>x.hid==S.hid);if(p)AU.unshift({p:p.id,h:1,t:nowt(),x:ok(p.id,1)&&R.some(r=>r.p==p.id&&r.h!=1)});render()}
+ else if(a=='note'){const dx=$('#dx').value.trim();if(!dx)return toast('Add a diagnosis before saving.');R.push({p:+i,h:1,date:TODAY,doc:S.user.n,dx,note:$('#nt').value.trim()||'No further notes.'});A.filter(x=>x.p==i&&x.d==S.user.id&&x.date==TODAY&&x.s=='Scheduled').forEach(x=>x.s='Completed');render();toast('Note saved and visit marked complete')}
+ else if(a=='book'){const d=+$('#bd').value,date=$('#bt').value,t=$('#bs').value;if(!date)return toast('Choose a date.');if(A.some(x=>x.d==d&&x.date==date&&x.t==t&&x.s!='Cancelled'))return toast(dn(d)+' is booked at '+t+'. Pick another time.');A.push({id:A.length+1,p:S.user.id,d,date,t,s:'Scheduled'});S.tab='me';render();toast('Visit booked for '+fd(date)+' at '+t)}
+ else if(a=='tg'){let c=C.find(x=>x.p==S.user.id&&x.to==i);if(c)c.on=!c.on;else C.push({p:S.user.id,to:+i,on:true});render();toast(H[i]+(ok(S.user.id,+i)?' can now see your records':' can no longer see records from other hospitals'))}
+});
+render();
+</script>
+</body>
+</html>
